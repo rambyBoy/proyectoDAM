@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../libs/onsen/css/onsenui.css">
+  <link rel="stylesheet" href="../libs/onsen/css/onsen-css-components.min.css">
+  <link rel="stylesheet" href="../libs/onsen/css/material-design-iconic-font/css/material-design-iconic-font.min.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <title>Encuestas.</title>
+</head>
+
+<body>
+
+  <ons-page>
+    <ons-toolbar>
+      <div class="left">
+        <ons-back-button>Atras</ons-back-button>
+      </div>
+      <div class="center">Graficas de encuesta</div>
+      <!--<div class="right">-->
+      <!--<ons-toolbar-button>-->
+      <!--<ons-icon icon="md-menu"></ons-icon>-->
+      <!--</ons-toolbar-button>-->
+      <!--</div>-->
+    </ons-toolbar>
+
+    <ons-card modifier="material">
+      <div class="title">
+        Awesome framework
+      </div>
+      <div class="content">
+        <ons-list>
+          <ons-list-header>Bindings</ons-list-header>
+          <ons-list-item>Vue</ons-list-item>
+          <ons-list-item>Angular</ons-list-item>
+          <ons-list-item>React</ons-list-item>
+        </ons-list>
+      </div>
+    </ons-card>
+  </ons-page>
+  <script src="../libs/onsen/js/onsenui.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-firestore.js"></script>
+  <script>
+    // Initialize Firebase
+    firebase.initializeApp({
+      apiKey: "AIzaSyCZqjylfQ2WSBP9uTfqx4VeW4jKuTXWwC8",
+      authDomain: "apt-helix-216517.firebaseapp.com",
+      databaseURL: "https://apt-helix-216517.firebaseio.com",
+      projectId: "apt-helix-216517",
+      storageBucket: "apt-helix-216517.appspot.com",
+      messagingSenderId: "1009348047012",
+      timestampsInSnapshots: false
+    });
+  </script>
+  <script>
+    var db = firebase.firestore();
+
+    db.collection('surveys').get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+        });
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+  </script>
+</body>
+</html>
