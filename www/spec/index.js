@@ -64,4 +64,32 @@ describe('app', function() {
             expect(displayStyle).toEqual('block');
         });
     });
+
+    describe('getSurveys', function(){
+        let db = firebase.firestore();
+
+        db.settings({
+            timestampsInSnapshots: true
+        });
+
+        db.collection("surveys").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                console.log(doc.id, " => ", doc.data().description);
+
+                let survey = document.getElementById("survey")
+
+                let title = document.createElement("h2");
+                let des = document.createElement("p");
+
+                title.innerHTML=doc.data().title;
+                des.innerHTML=doc.data().description;
+
+                title.setAttribute('height', "100%");
+                des.setAttribute('height', "100%");
+
+                survey.appendChild(des);
+                survey.appendChild(title);
+            });
+        })
+    })
 });
