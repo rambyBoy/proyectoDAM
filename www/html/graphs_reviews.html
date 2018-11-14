@@ -19,7 +19,7 @@
       <div class="left">
         <ons-back-button>Atras</ons-back-button>
       </div>
-      <div class="center">Graficas de encuesta</div>
+      <div class="center">Graficas de encuestas</div>
       <!--<div class="right">-->
       <!--<ons-toolbar-button>-->
       <!--<ons-icon icon="md-menu"></ons-icon>-->
@@ -27,48 +27,67 @@
       <!--</div>-->
     </ons-toolbar>
 
-    <ons-card modifier="material">
-      <div class="title">
-        Awesome framework
-      </div>
-      <div class="content">
-        <ons-list>
-          <ons-list-header>Bindings</ons-list-header>
-          <ons-list-item>Vue</ons-list-item>
-          <ons-list-item>Angular</ons-list-item>
-          <ons-list-item>React</ons-list-item>
-        </ons-list>
-      </div>
-    </ons-card>
+    <div id="survey">
+
+    </div>
+
+
   </ons-page>
   <script src="../libs/onsen/js/onsenui.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
   <script>
     // Initialize Firebase
-    firebase.initializeApp({
+    var config = {
       apiKey: "AIzaSyCZqjylfQ2WSBP9uTfqx4VeW4jKuTXWwC8",
       authDomain: "apt-helix-216517.firebaseapp.com",
       databaseURL: "https://apt-helix-216517.firebaseio.com",
       projectId: "apt-helix-216517",
       storageBucket: "apt-helix-216517.appspot.com",
-      messagingSenderId: "1009348047012",
-      timestampsInSnapshots: false
-    });
+      messagingSenderId: "1009348047012"
+    };
+    firebase.initializeApp(config);
   </script>
   <script>
     var db = firebase.firestore();
 
-    db.collection('surveys').get()
-    .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-        });
-    })
-    .catch(function(error) {
-        console.log("Error getting documents: ", error);
+    db.settings({
+      timestampsInSnapshots: true
     });
+
+    db.collection("surveys").get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+
+        let survey = document.getElementById("survey");
+
+        let card = document.createElement("ons-card");
+        let title = document.createElement("div");
+        let content = document.createElement("div");
+
+        card.classList.add('ons-card');
+
+
+        title.innerHTML = "<h2>" + doc.data().title + "</h2>";
+
+        content.innerHTML += "<ons-list-header>" + "Descripción: " + doc.data().description + "</ons-list-header>"
+          + "<ons-list-item>" + "Dependencia: " + doc.data().dependence + "</ons-list-item>";
+
+        let button = document.createElement('ons-button')
+        button.innerHTML = "Ver grafica"
+        button.setAttribute('id', 'iddd')
+
+        button.addEventListener('click', function () {
+          localStorage.setItem('graph', this.getAttribute('id'));
+          
+          window.location.href = "ramby.html"
+        })
+
+        content.append(button)
+
+        card.append(title, content);
+        survey.appendChild(card);
+      });
+    })
   </script>
 </body>
+
 </html>
