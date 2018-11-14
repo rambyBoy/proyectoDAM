@@ -67,9 +67,9 @@
               <div id="survey">
                 <style type="text/css">
                   .ons-card ons-button {
-                    margin-left: 35%;
+                    margin-left: 30%;
                     margin-top: 5%;
-              
+
                   }
                 </style>
               </div>
@@ -108,12 +108,18 @@
                   +"<ons-list-item>"+"Puntaje: "+doc.data().points+ "</ons-list-item>"+
                   "<ons-list-item>"+"Dependencia: "+doc.data().dependence+ "</ons-list-item>"+
                   "<ons-list-item>"+"Fecha límite: "+doc.data().date+ "</ons-list-item>"
-                  +
 
-                "<ons-button>Iniciar</ons-button>";
+                let button = document.createElement('ons-button')
+                button.innerHTML = "contestar"
+                button.setAttribute('id', doc.id)
 
+                button.addEventListener('click', function () {
+                  localStorage.setItem('encuesta', this.getAttribute('id'));
 
+                  window.location.href = "survey.html"
+                })
 
+                content.append(button)
                 card.append(title, content);
                 survey.appendChild(card);
             });
