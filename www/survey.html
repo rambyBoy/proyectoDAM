@@ -52,31 +52,46 @@
 <body>
     <div class="app">
         <div id="deviceready" class="blink">
-          <ons-page>
-              <ons-toolbar>
-                <div class="left">
-                  <ons-toolbar-button>
-                    <ons-icon icon="md-menu"></ons-icon>
-                  </ons-toolbar-button>
-                </div>
+            <ons-page>
+                <ons-toolbar>
+                    <div class="left">
+                        <ons-toolbar-button>
+                        <ons-icon icon="md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                    </div>
                 <div class="center">Encuestas</div>
 
-              </ons-toolbar>
+                </ons-toolbar>
 
 
-              <div id="survey">
-                <style type="text/css">
-                  .ons-card ons-button {
-                    margin-left: 30%;
+                <div id="survey">
+                    <style type="text/css">
+                    .ons-card ons-button{
+                    margin-left: 35%;
                     margin-top: 5%;
 
-                  }
-                </style>
-              </div>
+                    }
+
+                    </style>
+                </div>
+            </ons-page>
     </div>
 
-
-  </ons-page>
+    <style type="text/css">
+        .sep{
+            border-bottom: 1px solid grey;
+            padding: 10px;
+            box-sizing: border-box;
+            height: 100% !important;
+            width: 100%;
+        }
+        .button{
+            margin-top: 20px;
+        }
+        h2{
+            text-align: center;
+        }
+    </style>
 
 
     <!-- <script type="text/javascript" src="cordova.js"></script> -->
@@ -90,40 +105,35 @@
             timestampsInSnapshots: true
         });
 
-        db.collection("surveys").get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
+            db.collection("surveys").doc(localStorage.getItem('selected_survey')).collection("questions").get().then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                    let survey = document.getElementById("survey");
+                    let sep = document.createElement("div");
+                    let q = document.createElement("h2");
+                    let a = document.createElement("div");
+                    // style
+                    sep.classList.add('sep');
 
-                let survey = document.getElementById("survey");
+                    // question and answer
+                    let campo = "<center>"+"<select>";
+                    q.innerHTML=doc.data().question;
+                    for(i=0; i < doc.data().answer.length; i++){
+                        campo+="<option>"+doc.data().answer[i]+"</option>"
+                        console.log(doc.data().answer[i]);
+                    }
+                    campo += "</select>"+
+                            "<br>"+
+                            "<center>"+
+                                "<button class=button id=>Siguiente pregunta"+"</button>"+
+                            "</center>"+
+                            "</center>";
+                    a.innerHTML=campo;
 
-                let card = document.createElement("ons-card");
-                let title = document.createElement("div");
-                let content = document.createElement("div");
+                    sep.append(q,a);
+                    survey.appendChild(sep);
+                });
 
-                card.classList.add('ons-card');
-
-
-                title.innerHTML="<h2>"+doc.data().title+"</h2>";
-
-                content.innerHTML+="<ons-list-header>" +"Descripción: "+doc.data().description+"</ons-list-header>"
-                  +"<ons-list-item>"+"Puntaje: "+doc.data().points+ "</ons-list-item>"+
-                  "<ons-list-item>"+"Dependencia: "+doc.data().dependence+ "</ons-list-item>"+
-                  "<ons-list-item>"+"Fecha límite: "+doc.data().date+ "</ons-list-item>"
-
-                let button = document.createElement('ons-button')
-                button.innerHTML = "contestar"
-                button.setAttribute('id', doc.id)
-
-                button.addEventListener('click', function () {
-                  localStorage.setItem('selected_survey', this.getAttribute('id'));
-
-                  window.location.href = "survey.html"
-                })
-
-                content.append(button)
-                card.append(title, content);
-                survey.appendChild(card);
             });
-        })
     </script>
 </body>
 
