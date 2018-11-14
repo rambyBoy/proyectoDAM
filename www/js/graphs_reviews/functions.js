@@ -7,7 +7,7 @@ var db = firebase.firestore();
     db.collection("surveys").get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
 
-        let survey = document.getElementById("s");
+        let surveys = document.getElementById("surveys");
 
         let card = document.createElement("ons-card");
         let title = document.createElement("div");
@@ -23,7 +23,7 @@ var db = firebase.firestore();
 
         let button = document.createElement('ons-button')
         button.innerHTML = "Ver grafica"
-        button.setAttribute('id', 'iddd')
+        button.setAttribute('id', doc.id)
 
         button.addEventListener('click', function () {
           localStorage.setItem('graph', this.getAttribute('id'));
@@ -34,7 +34,7 @@ var db = firebase.firestore();
         content.append(button)
 
         card.append(title, content);
-        survey.appendChild(card);
+        surveys.appendChild(card);
       });
     })
 

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../libs/onsen/css/onsenui.css">
+    <link rel="stylesheet" href="../libs/onsen/css/onsen-css-components.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>Encuesta DFG456DG</title>
+</head>
+
+<body>
+
+    <ons-page>
+        <ons-toolbar>
+            <div class="left">
+                <ons-back-button id="back-button">Regresar</ons-back-button>
+            </div>
+            <div class="center">Servicio de recolección de basura</div>
+            <!--<div class="right">-->
+            <!--<ons-toolbar-button>-->
+            <!--<ons-icon icon="md-menu"></ons-icon>-->
+            <!--</ons-toolbar-button>-->
+            <!--</div>-->
+        </ons-toolbar>
+
+        <div id="bar-1"></div>
+        <div id="bar-2"></div>
+        <div id="bar-3"></div>
+        <div id="bar-4"></div>
+        <div id="bar-5"></div>
+
+        <script>
+            /*
+            *
+            * Jalar los datos de la BD como un arreglos y posicionarlos en X y Y respectivamente.
+            * */
+
+            var question_id = ['bar-1', 'bar-2', 'bar-3'];
+            var question_name = ['¿Te gusta?', '¿Tons khè mami?', 'ola k ase?'];
+            var X = [
+                ['Nel', 'Hola', 'Prueba'],
+                ['Jajaja', 'Lol', 'Uno'],
+                ['Uno', 'dóh', 'tréh', 'cuatro']
+            ];
+            var Y = [
+                [14, 5, 9],
+                [45, 10, 6],
+                [1, 2, 3]
+            ];
+
+            for (var i = 0; i < question_id.length; i++) {
+                var data = [
+                    {
+                        x: X[i], // opciones a elegir
+                        y: Y[i], // elecciones de los usuarios
+                        type: 'bar',
+                    }
+                ];
+
+                var layout = {
+                    title: question_name[i]
+                };
+
+                Plotly.newPlot(question_id[i], data, layout);
+            }
+
+            let back_button = document.getElementById("back-button")
+            back_button.addEventListener('click', function () {
+                window.history.back()
+            })
+        </script>
+    </ons-page>
+    <script src="../libs/onsen/js/onsenui.js"></script>
+</body>
+
+</html>

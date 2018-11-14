@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+
+    <!-- onsen -->
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCZqjylfQ2WSBP9uTfqx4VeW4jKuTXWwC8",
+        authDomain: "apt-helix-216517.firebaseapp.com",
+        databaseURL: "https://apt-helix-216517.firebaseio.com",
+        projectId: "apt-helix-216517",
+        storageBucket: "apt-helix-216517.appspot.com",
+        messagingSenderId: "1009348047012"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>SEC - App</title>
+</head>
+
+<body>
+    <div class="app">
+        <div id="deviceready" class="blink">
+          <ons-page>
+              <ons-toolbar>
+                <div class="left">
+                  <ons-toolbar-button>
+                    <ons-icon icon="md-menu"></ons-icon>
+                  </ons-toolbar-button>
+                </div>
+                <div class="center">Encuestas</div>
+
+              </ons-toolbar>
+
+
+              <div id="survey">
+                <style type="text/css">
+                  .ons-card ons-button {
+                    margin-left: 35%;
+                    margin-top: 5%;
+              
+                  }
+                </style>
+              </div>
+    </div>
+
+
+  </ons-page>
+
+
+    <!-- <script type="text/javascript" src="cordova.js"></script> -->
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+
+        var db = firebase.firestore();
+
+        db.settings({
+            timestampsInSnapshots: true
+        });
+
+        db.collection("surveys").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+
+                let survey = document.getElementById("survey");
+
+                let card = document.createElement("ons-card");
+                let title = document.createElement("div");
+                let content = document.createElement("div");
+
+                card.classList.add('ons-card');
+
+
+                title.innerHTML="<h2>"+doc.data().title+"</h2>";
+
+                content.innerHTML+="<ons-list-header>" +"Descripción: "+doc.data().description+"</ons-list-header>"
+                  +"<ons-list-item>"+"Puntaje: "+doc.data().points+ "</ons-list-item>"+
+                  "<ons-list-item>"+"Dependencia: "+doc.data().dependence+ "</ons-list-item>"+
+                  "<ons-list-item>"+"Fecha límite: "+doc.data().date+ "</ons-list-item>"
+                  +
+
+                "<ons-button>Iniciar</ons-button>";
+
+
+
+                card.append(title, content);
+                survey.appendChild(card);
+            });
+        })
+    </script>
+</body>
+
+</html>
