@@ -17,7 +17,7 @@
   <ons-page>
     <ons-toolbar>
       <div class="left">
-        <ons-back-button>Atras</ons-back-button>
+        <ons-back-button id="back-button">Atras</ons-back-button>
       </div>
       <div class="center">Graficas de encuestas</div>
       <!--<div class="right">-->
@@ -35,18 +35,7 @@
   </ons-page>
   <script src="../libs/onsen/js/onsenui.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyCZqjylfQ2WSBP9uTfqx4VeW4jKuTXWwC8",
-      authDomain: "apt-helix-216517.firebaseapp.com",
-      databaseURL: "https://apt-helix-216517.firebaseio.com",
-      projectId: "apt-helix-216517",
-      storageBucket: "apt-helix-216517.appspot.com",
-      messagingSenderId: "1009348047012"
-    };
-    firebase.initializeApp(config);
-  </script>
+  <script src="../js/firebase.js"></script>
   <script>
     var db = firebase.firestore();
 
@@ -86,6 +75,11 @@
         card.append(title, content);
         survey.appendChild(card);
       });
+    })
+
+    let back_button = document.getElementById("back-button")
+    back_button.addEventListener('click', function () {
+      window.history.back()
     })
   </script>
 </body>
