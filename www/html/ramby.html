@@ -11,6 +11,10 @@
     <title>Encuesta DFG456DG</title>
 </head>
 
+<script>
+    var dbID = localStorage.graph;
+</script>
+
 <body>
 
     <ons-page>
@@ -18,7 +22,9 @@
             <div class="left">
                 <ons-back-button id="back-button">Regresar</ons-back-button>
             </div>
-            <div class="center">Servicio de recolección de basura</div>
+            <div class="center">
+                <script>document.write(dbID.toUpperCase());</script>
+            </div>
             <!--<div class="right">-->
             <!--<ons-toolbar-button>-->
             <!--<ons-icon icon="md-menu"></ons-icon>-->
@@ -48,7 +54,7 @@
             var Y = [
                 [14, 5, 9],
                 [45, 10, 6],
-                [1, 2, 3]
+                [1, 2, 3, 4]
             ];
 
             for (var i = 0; i < question_id.length; i++) {
@@ -67,10 +73,10 @@
                 Plotly.newPlot(question_id[i], data, layout);
             }
 
-            let back_button = document.getElementById("back-button")
+            let back_button = document.getElementById("back-button");
             back_button.addEventListener('click', function () {
                 window.history.back()
-            })
+            });
         </script>
     </ons-page>
     <script src="../libs/onsen/js/onsenui.js"></script>
