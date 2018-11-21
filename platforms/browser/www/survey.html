@@ -59,7 +59,7 @@
                         <ons-icon icon="md-menu"></ons-icon>
                     </ons-toolbar-button>
                     </div>
-                <div class="center">Encuestas</div>
+                <div class="center">Encuestados</div>
 
                 </ons-toolbar>
 
@@ -74,20 +74,15 @@
 
                     </style>
                 </div>
+
+                <ons-button id="database-button">Default</ons-button>
             </ons-page>
+        </div>
     </div>
 
     <style type="text/css">
-        .sep{
-            border-bottom: 1px solid grey;
-            padding: 10px;
-            box-sizing: border-box;
-            height: 100% !important;
-            width: 100%;
-        }
-        .button{
-            margin-top: 20px;
-        }
+
+
         h2{
             text-align: center;
         }
@@ -118,7 +113,7 @@
                     let campo = "<center>"+"<ons-select>";
                     q.innerHTML=doc.data().question;
                     for(i=0; i < doc.data().answer.length; i++){
-                        campo+="<option>"+doc.data().answer[i]+"</option>"
+                        campo+="<option value=" + i +" >"+doc.data().answer[i]+"</option>"
                         console.log(doc.data().answer[i]);
                     }
                     campo += "</ons-select>"+
@@ -133,6 +128,8 @@
 
             });
     </script>
+
+    <script src="js/save_database.js"></script>
 </body>
 
 </html>
