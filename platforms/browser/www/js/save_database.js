@@ -1,5 +1,6 @@
-var data = {
-	question_id: 'basura',
+
+/*var data = {
+		question_id: 'basura',
 	awnsers: {
 		FSjwHG4guzlHJahNGZNT: 0,
 		QZTCBXShEJmeAF2koyk8: 6,
@@ -7,12 +8,14 @@ var data = {
 		qskzRzJOGkIZpL05vZjn: 1,
 		xAj9J7eyKtlM0dHvincq: 0
 	}
-}
+}*/
 
-let database_btn = document.getElementById('database-button')
+async function sendFirebaseDatabase() {
+	let database_btn = document.getElementById('db-btn')
 
-database_btn.addEventListener('click', async function () {
-	var questions = db.collection("surveys").doc(data.question_id).collection("questions");
+	console.log(data);
+
+	var questions = await db.collection("surveys").doc(data.question_id).collection("questions");
 
 	for (anwser in data.awnsers) {
 		var anwsers = questions.doc(anwser);
@@ -26,7 +29,16 @@ database_btn.addEventListener('click', async function () {
 
 			console.log(respuestas)
 
-			anwsers.update({respuestas: respuestas}).then(() => {console.log("ok")})
+			anwsers.update({ 
+				respuestas: respuestas 
+			}).then(() => { 
+				console.log("ok") 
+			})
 		});
 	}
-})
+
+}
+
+
+
+
