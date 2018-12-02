@@ -3,83 +3,162 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <!--<meta name="viewport"-->
+          <!--content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../libs/onsen/css/onsenui.css">
     <link rel="stylesheet" href="../libs/onsen/css/onsen-css-components.min.css">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <title>Encuesta DFG456DG</title>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+    <script type="text/javascript" src="../js/index.js"></script>
+    <script src="../libs/onsen/js/onsenui.js"></script>
+    <title>Gráficas</title>
 </head>
 
+<style>
+    body {
+        overflow-y: scroll;
+    }
+</style>
+
 <script>
-    var dbID = localStorage.graph;
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCZqjylfQ2WSBP9uTfqx4VeW4jKuTXWwC8",
+        authDomain: "apt-helix-216517.firebaseapp.com",
+        databaseURL: "https://apt-helix-216517.firebaseio.com",
+        projectId: "apt-helix-216517",
+        storageBucket: "apt-helix-216517.appspot.com",
+        messagingSenderId: "1009348047012"
+    };
+    firebase.initializeApp(config);
 </script>
 
-<body>
+<body style="height: 100%;">
 
-    <ons-page>
-        <ons-toolbar>
-            <div class="left">
-                <ons-back-button id="back-button">Regresar</ons-back-button>
-            </div>
-            <div class="center">
-                <script>document.write(dbID.toUpperCase());</script>
-            </div>
-            <!--<div class="right">-->
-            <!--<ons-toolbar-button>-->
-            <!--<ons-icon icon="md-menu"></ons-icon>-->
-            <!--</ons-toolbar-button>-->
-            <!--</div>-->
-        </ons-toolbar>
+<ons-page>
+    <ons-toolbar style="position: absolute">
+        <div class="left">
+            <ons-back-button id="back-button">Regresar</ons-back-button>
+        </div>
+        <div class="center">
+            <script>
+                var dbID = localStorage.getItem('graph');
+                document.write(dbID.toUpperCase());
+            </script>
+        </div>
+        <!--<div class="right">-->
+        <!--<ons-toolbar-button>-->
+        <!--<ons-icon icon="md-menu"></ons-icon>-->
+        <!--</ons-toolbar-button>-->
+        <!--</div>-->
+    </ons-toolbar>
 
-        <div id="bar-1"></div>
-        <div id="bar-2"></div>
-        <div id="bar-3"></div>
-        <div id="bar-4"></div>
-        <div id="bar-5"></div>
+    <div id="graficas" style="margin-top: 5%; overflow: scroll; height: 100%;"></div>
 
-        <script>
-            /*
-            *
-            * Jalar los datos de la BD como un arreglos y posicionarlos en X y Y respectivamente.
-            * */
+    <script>
+        app.initialize();
+        let a = firebase.firestore();
+        //console.log(a);
 
-            var question_id = ['bar-1', 'bar-2', 'bar-3'];
-            var question_name = ['¿Te gusta?', '¿Tons khè mami?', 'ola k ase?'];
-            var X = [
-                ['Nel', 'Hola', 'Prueba'],
-                ['Jajaja', 'Lol', 'Uno'],
-                ['Uno', 'dóh', 'tréh', 'cuatro']
-            ];
-            var Y = [
-                [14, 5, 9],
-                [45, 10, 6],
-                [1, 2, 3, 4]
-            ];
+        a.settings({
+            timestampsInSnapshots: true
+        });
 
-            for (var i = 0; i < question_id.length; i++) {
-                var data = [
+        var contador = 0;
+
+        a.collection("surveys").doc(localStorage.getItem('graph')).collection("questions").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                var h = "<div id='bar-" + contador + "'></div>";
+                document.getElementById('graficas').innerHTML += h;
+                contador++;
+            });
+        });
+
+        var contador2 = 0;
+
+        a.collection("surveys").doc(localStorage.getItem('graph')).collection("questions").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                //alert(contador2);
+                var q = doc.data().question;
+                var ans = doc.data().answer;
+                var r = doc.data().respuestas;
+                var id = "bar-" + contador2;
+
+                //console.log(q);
+                //console.log(ans);
+
+                data = [
                     {
-                        x: X[i], // opciones a elegir
-                        y: Y[i], // elecciones de los usuarios
-                        type: 'bar',
+                        x: ans, // opciones a elegir
+                        y: r, // elecciones de los usuarios
+                        type: 'bars'
                     }
                 ];
 
-                var layout = {
-                    title: question_name[i]
+                layout = {
+                    title: q,
                 };
 
-                Plotly.newPlot(question_id[i], data, layout);
-            }
+                Plotly.newPlot(id, data, layout);
 
-            let back_button = document.getElementById("back-button");
-            back_button.addEventListener('click', function () {
-                window.history.back()
+                //console.log("X: " + X);
+                //console.log("Y: " + Y);
+                contador2 += 1;
             });
-        </script>
-    </ons-page>
-    <script src="../libs/onsen/js/onsenui.js"></script>
+        });
+    </script>
+
+    <!--<div id="bar-1"></div>-->
+    <!--<div id="bar-2"></div>-->
+    <!--<div id="bar-3"></div>-->
+    <!--<div id="bar-4"></div>-->
+    <!--<div id="bar-5"></div>-->
+
+    <script>
+        /*
+        *
+        * Jalar los datos de la BD como un arreglos y posicionarlos en X y Y respectivamente.
+        * */
+
+        // var question_id = ['bar-1', 'bar-2', 'bar-3'];
+        // var question_name = ['¿Te gusta?', '¿Tons khè mami?', 'ola k ase?'];
+        //
+        // var X = [
+        //     ['Nel', 'Hola', 'Prueba'],
+        //     ['Jajaja', 'Lol', 'Uno'],
+        //     ['Uno', 'dóh', 'tréh', 'cuatro']
+        // ];
+        // var Y = [
+        //     [14, 5, 9],
+        //     [45, 10, 6],
+        //     [1, 2, 3, 4]
+        // ];
+        //
+        // for (var i = 0; i < question_id.length; i++) {
+        //     var data = [
+        //         {
+        //             x: X[i], // opciones a elegir
+        //             y: Y[i], // elecciones de los usuarios
+        //             type: 'bar',
+        //         }
+        //     ];
+        //
+        //     var layout = {
+        //         title: question_name[i]
+        //     };
+        //
+        //     Plotly.newPlot(question_id[i], data, layout);
+        // }
+        //
+        let back_button = document.getElementById("back-button");
+        back_button.addEventListener('click', function () {
+            window.history.back()
+        });
+    </script>
+
+</ons-page>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </body>
 
 </html>
